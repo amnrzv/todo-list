@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from "react"
-import { TextField, Fab } from "@material-ui/core"
-import AddIcon from "@material-ui/icons/Add"
+import { IconButton, Theme, Input, Box } from "@material-ui/core"
+import AddIcon from "@material-ui/icons/AddCircle"
 
 import { TodoListHeader } from "../TodoListHeader"
 import { TodoListItem } from "../TodoListItem"
@@ -11,17 +11,16 @@ type TodoListItemType = {
   completed: boolean
 }
 
-export const TodoList: React.FC = () => {
+export const TodoList: React.FC<{ theme: Theme }> = ({ theme }) => {
   const [todoList, setTodoList] = useState<TodoListItemType[]>([])
   const [inputText, setInputText] = useState<string>("")
-
-  // console.table(todoList)
 
   const renderTodoListItem = (item: TodoListItemType, index: number) => {
     const { id, text, completed } = item
 
     return (
       <TodoListItem
+        theme={theme}
         key={index}
         id={item.id}
         text={item.text}
@@ -58,16 +57,17 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      <TodoListHeader />
+      <Box m={2}>
+        <TodoListHeader />
+      </Box>
       <ul data-testid="todoListItems">{todoList.map(renderTodoListItem)}</ul>
       <form onSubmit={(event: FormEvent) => AddTodo(event)}>
-        <Fab size="small" color="primary" type="submit">
+        <IconButton size="medium" color="primary" type="submit">
           <AddIcon />
-        </Fab>
-        <TextField
+        </IconButton>
+        <Input
           data-testid="todoInput"
-          id="standard-basic"
-          label="Add a to-do"
+          placeholder="Add a to-do"
           value={inputText}
           onChange={event => setInputText(event.target.value)}
         />

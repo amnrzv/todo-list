@@ -1,18 +1,12 @@
 import React, { useState } from "react"
 import cx from "classnames"
-import {
-  Checkbox,
-  Box,
-  IconButton,
-  createMuiTheme,
-  ThemeProvider
-} from "@material-ui/core"
-import { purple, green } from "@material-ui/core/colors"
+import { Checkbox, Box, IconButton, Theme, Typography } from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
 
 import "./style.scss"
 
 type TodoListItemProps = {
+  theme: Theme
   id: string
   text: string
   completed: boolean
@@ -20,18 +14,9 @@ type TodoListItemProps = {
   deleteTodo: () => void
 }
 
-const theme = createMuiTheme({
-  palette: {
-    primary: purple,
-    secondary: {
-      main: green[600]
-    }
-  }
-})
-
 export const TodoListItem: React.FC<TodoListItemProps> = ({
+  theme,
   text,
-  id,
   completed,
   toggleComplete,
   deleteTodo
@@ -45,19 +30,17 @@ export const TodoListItem: React.FC<TodoListItemProps> = ({
       onMouseLeave={() => setShowDeleteBtn(false)}
     >
       <label className="content">
-        <ThemeProvider theme={theme}>
-          <Checkbox
-            size="medium"
-            checked={completed}
-            onChange={toggleComplete}
-          />
-        </ThemeProvider>
+        <Checkbox size="medium" checked={completed} onChange={toggleComplete} />
         <Box textAlign="left" className={cx({ completed })}>
-          {text}
+          <Typography variant="body1">{text}</Typography>
         </Box>
       </label>
       {showDeleteBtn && (
-        <IconButton data-testid="deleteBtn" onClick={deleteTodo}>
+        <IconButton
+          data-testid="deleteBtn"
+          onClick={deleteTodo}
+          color="primary"
+        >
           <DeleteIcon />
         </IconButton>
       )}

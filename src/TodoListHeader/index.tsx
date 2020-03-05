@@ -1,10 +1,11 @@
 import React from "react"
+import { Typography } from "@material-ui/core"
 
 export const TodoListHeader: React.FC = () => {
   return (
     <>
-      <h1>Team To-Do List</h1>
-      <h3>28th February</h3>
+      <Typography variant="h3">Team To-Do List</Typography>
+      <Typography variant="subtitle1">Wed 4 March</Typography>
     </>
   )
 }
