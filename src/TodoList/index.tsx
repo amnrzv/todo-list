@@ -1,9 +1,11 @@
 import React, { useState, FormEvent } from "react"
-import { IconButton, Theme, Input, Box } from "@material-ui/core"
+import { IconButton, Input, Box } from "@material-ui/core"
 import AddIcon from "@material-ui/icons/AddCircle"
 
 import { TodoListHeader } from "../TodoListHeader"
 import { TodoListItem } from "../TodoListItem"
+
+import "./style.scss"
 
 type TodoListItemType = {
   id: string
@@ -11,7 +13,7 @@ type TodoListItemType = {
   completed: boolean
 }
 
-export const TodoList: React.FC<{ theme: Theme }> = ({ theme }) => {
+export const TodoList: React.FC = () => {
   const [todoList, setTodoList] = useState<TodoListItemType[]>([])
   const [inputText, setInputText] = useState<string>("")
 
@@ -20,7 +22,6 @@ export const TodoList: React.FC<{ theme: Theme }> = ({ theme }) => {
 
     return (
       <TodoListItem
-        theme={theme}
         key={index}
         id={item.id}
         text={item.text}
@@ -56,22 +57,23 @@ export const TodoList: React.FC<{ theme: Theme }> = ({ theme }) => {
   }
 
   return (
-    <>
-      <Box m={2}>
+    <Box flex={2} borderLeft={1} height="100%" borderColor="grey.400">
+      <section className="todoListContainer">
         <TodoListHeader />
-      </Box>
-      <ul data-testid="todoListItems">{todoList.map(renderTodoListItem)}</ul>
-      <form onSubmit={(event: FormEvent) => AddTodo(event)}>
-        <IconButton size="medium" color="primary" type="submit">
-          <AddIcon />
-        </IconButton>
-        <Input
-          data-testid="todoInput"
-          placeholder="Add a to-do"
-          value={inputText}
-          onChange={event => setInputText(event.target.value)}
-        />
-      </form>
-    </>
+        <ul data-testid="todoListItems">{todoList.map(renderTodoListItem)}</ul>
+        <form onSubmit={(event: FormEvent) => AddTodo(event)}>
+          <IconButton size="medium" color="primary" type="submit">
+            <AddIcon />
+          </IconButton>
+          <Input
+            className="formInput"
+            data-testid="todoInput"
+            placeholder="Add a to-do"
+            value={inputText}
+            onChange={event => setInputText(event.target.value)}
+          />
+        </form>
+      </section>
+    </Box>
   )
 }

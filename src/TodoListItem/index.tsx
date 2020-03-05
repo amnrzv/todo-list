@@ -1,12 +1,11 @@
 import React, { useState } from "react"
 import cx from "classnames"
-import { Checkbox, Box, IconButton, Theme, Typography } from "@material-ui/core"
+import { Checkbox, Box, IconButton, Typography } from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
 
 import "./style.scss"
 
 type TodoListItemProps = {
-  theme: Theme
   id: string
   text: string
   completed: boolean
@@ -15,7 +14,6 @@ type TodoListItemProps = {
 }
 
 export const TodoListItem: React.FC<TodoListItemProps> = ({
-  theme,
   text,
   completed,
   toggleComplete,

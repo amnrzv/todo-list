@@ -1,0 +1,18 @@
+.todoListContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+form {
+  background-color: #ece9ef;
+  min-height: 8rem;
+
+  .formInput {
+    min-width: 25rem;
+  }
+}
