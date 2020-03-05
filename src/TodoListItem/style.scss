@@ -5,7 +5,7 @@ ul {
 li {
   &:hover {
     cursor: pointer;
-    background-color: lightblue;
+    background-color: rgb(220, 211, 238);
   }
 
   *:hover {
@@ -23,12 +23,11 @@ li {
 .content {
   display: flex;
   width: 100%;
+  align-items: center;
+  padding: 0.2rem;
 }
 
 .completed {
   text-decoration: line-through;
-}
-
-.textLabel {
-  flex: 1;
+  color: grey;
 }

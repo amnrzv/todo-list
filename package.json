@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.9.5",
+    "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.1.2",
@@ -20,13 +22,13 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "CI=true react-scripts test",
-    "eject": "react-scripts eject",
-    "precommit": "yarn test"
+    "test": "react-scripts test",
+    "test:no-watch": "CI=true react-scripts test",
+    "eject": "react-scripts eject"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn test"
+      "pre-commit": "yarn test:no-watch"
     }
   },
   "eslintConfig": {

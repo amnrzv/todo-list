@@ -18,14 +18,18 @@ describe("Todo List", () => {
     getByTestId = rendered.getByTestId
 
     todoListItems = getByTestId("todoListItems")
-    todoInputField = getByTestId("todoInput")
+    todoInputField = getByTestId("todoInput").querySelector(
+      "input"
+    ) as HTMLInputElement
   })
 
   describe("Add items", () => {
     it("Adds an item to the todo list by inputting in the field and pressing the button", () => {
       todoInputField.focus()
       fireEvent.input(todoInputField, { target: { value: mockText } })
-      fireEvent.submit(getByText("+"))
+      fireEvent.submit(
+        container.querySelector('button[type="submit"]') as HTMLButtonElement
+      )
 
       expect(todoListItems.childNodes[0]).toHaveTextContent(mockText)
     })
@@ -102,12 +106,12 @@ describe("Todo List", () => {
     it("Hovering over an item shows a delete button", () => {
       fireEvent.mouseEnter(todoListItems.childNodes[0])
 
-      expect(todoListItems.childNodes[0]).toHaveTextContent("🗑")
+      expect(getByTestId("deleteBtn")).toBeVisible()
     })
 
     it("Hovering over an item and clicking the delete button removes the item from the list", () => {
       fireEvent.mouseEnter(todoListItems.childNodes[1])
-      fireEvent.click(getByText("🗑"))
+      fireEvent.click(getByTestId("deleteBtn"))
 
       expect(todoListItems.childNodes.length).toBe(1)
     })

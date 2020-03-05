@@ -1,4 +1,7 @@
 import React, { useState, FormEvent } from "react"
+import { TextField, Fab } from "@material-ui/core"
+import AddIcon from "@material-ui/icons/Add"
+
 import { TodoListHeader } from "../TodoListHeader"
 import { TodoListItem } from "../TodoListItem"
 
@@ -8,9 +11,7 @@ type TodoListItemType = {
   completed: boolean
 }
 
-export type TodoListItemsType = {}
-
-export const TodoList: React.FC<TodoListItemsType> = () => {
+export const TodoList: React.FC = () => {
   const [todoList, setTodoList] = useState<TodoListItemType[]>([])
   const [inputText, setInputText] = useState<string>("")
 
@@ -60,12 +61,14 @@ export const TodoList: React.FC<TodoListItemsType> = () => {
       <TodoListHeader />
       <ul data-testid="todoListItems">{todoList.map(renderTodoListItem)}</ul>
       <form onSubmit={(event: FormEvent) => AddTodo(event)}>
-        <button type="submit">+</button>
-        <input
+        <Fab size="small" color="primary" type="submit">
+          <AddIcon />
+        </Fab>
+        <TextField
           data-testid="todoInput"
-          type="text"
+          id="standard-basic"
+          label="Add a to-do"
           value={inputText}
-          placeholder="Add a to-do"
           onChange={event => setInputText(event.target.value)}
         />
       </form>
