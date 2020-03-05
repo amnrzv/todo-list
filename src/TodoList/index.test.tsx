@@ -1,88 +1,113 @@
 import React from "react"
-import { render, fireEvent } from "@testing-library/react"
+import { render, fireEvent, Matcher } from "@testing-library/react"
 
 import { TodoList } from "."
 
 describe("Todo List", () => {
-  it("Adds an item to the todo list by inputting in the field and pressing the button", () => {
-    const mockText = "[dummy text]"
-    const { getByTestId, getByText } = render(<TodoList />)
+  const mockText = "[dummy text]"
+  let container: HTMLElement
+  let todoListItems: HTMLElement
+  let todoInputField: HTMLElement
+  let getByText: (text: Matcher) => HTMLElement
+  let getByTestId: (text: Matcher) => HTMLElement
 
-    const todoListItems = getByTestId("todoListItems")
-    const todoInputField = getByTestId("todoInput")
-    todoInputField.focus()
-    fireEvent.input(todoInputField, { target: { value: mockText } })
-    fireEvent.submit(getByText("+ Add a to-do"))
+  beforeEach(() => {
+    const rendered = render(<TodoList />)
+    container = rendered.container
+    getByText = rendered.getByText
+    getByTestId = rendered.getByTestId
 
-    expect(todoListItems.childNodes[0]).toHaveTextContent(mockText)
+    todoListItems = getByTestId("todoListItems")
+    todoInputField = getByTestId("todoInput")
   })
 
-  it("Adds an item to the todo list by inputting in the field and submitting the form", () => {
-    const mockText = "[dummy text]"
-    const { container, getByTestId } = render(<TodoList />)
+  describe("Add items", () => {
+    it("Adds an item to the todo list by inputting in the field and pressing the button", () => {
+      todoInputField.focus()
+      fireEvent.input(todoInputField, { target: { value: mockText } })
+      fireEvent.submit(getByText("+ Add a to-do"))
 
-    const todoListItems = getByTestId("todoListItems")
-    const todoInputField = getByTestId("todoInput")
-    const form = container.querySelector("form") as HTMLFormElement
+      expect(todoListItems.childNodes[0]).toHaveTextContent(mockText)
+    })
 
-    todoInputField.focus()
-    fireEvent.input(todoInputField, { target: { value: mockText } })
-    fireEvent.submit(form)
+    it("Adds an item to the todo list by inputting in the field and submitting the form", () => {
+      const form = container.querySelector("form") as HTMLFormElement
 
-    expect(todoListItems.childNodes[0]).toHaveTextContent(mockText)
+      todoInputField.focus()
+      fireEvent.input(todoInputField, { target: { value: mockText } })
+      fireEvent.submit(form)
+
+      expect(todoListItems.childNodes[0]).toHaveTextContent(mockText)
+    })
+
+    it("Adds multiple items to the todo list", () => {
+      const form = container.querySelector("form") as HTMLFormElement
+
+      todoInputField.focus()
+      fireEvent.input(todoInputField, { target: { value: mockText } })
+      fireEvent.submit(form)
+
+      fireEvent.input(todoInputField, { target: { value: mockText } })
+      fireEvent.submit(form)
+
+      expect(todoListItems.childNodes.length).toBe(2)
+    })
   })
 
-  it("Adds multiple items to the todo list", () => {
-    const mockText = "[dummy text]"
-    const { container, getByTestId } = render(<TodoList />)
+  describe("Mark items", () => {
+    beforeEach(() => {
+      const form = container.querySelector("form") as HTMLFormElement
 
-    const todoListItems = getByTestId("todoListItems")
-    const todoInputField = getByTestId("todoInput")
-    const form = container.querySelector("form") as HTMLFormElement
+      todoInputField.focus()
+      fireEvent.input(todoInputField, { target: { value: mockText } })
+      fireEvent.submit(form)
 
-    todoInputField.focus()
-    fireEvent.input(todoInputField, { target: { value: mockText } })
-    fireEvent.submit(form)
+      todoInputField.focus()
+      fireEvent.input(todoInputField, { target: { value: mockText } })
+      fireEvent.submit(form)
+    })
 
-    fireEvent.input(todoInputField, { target: { value: mockText } })
-    fireEvent.submit(form)
+    it("Mark a todo as complete by tapping on the text", () => {
+      fireEvent.click(todoListItems.childNodes[0].childNodes[1])
+      const itemCheckbox = todoListItems.childNodes[0].firstChild
 
-    expect(todoListItems.childNodes.length).toBe(2)
+      expect(itemCheckbox).toBeChecked()
+    })
+
+    it("Mark a todo as complete by tapping on the checkbox", () => {
+      const itemCheckbox = container.querySelector(
+        'input[type="checkbox"]'
+      ) as HTMLInputElement
+      fireEvent.click(itemCheckbox)
+
+      expect(itemCheckbox).toBeChecked()
+    })
   })
 
-  it("Add a todo and mark it as complete by tapping on the text", () => {
-    const mockText = "[dummy text]"
-    const { container, getByTestId, getByText } = render(<TodoList />)
+  describe("Delete items", () => {
+    beforeEach(() => {
+      const form = container.querySelector("form") as HTMLFormElement
 
-    const todoInputField = getByTestId("todoInput")
-    const form = container.querySelector("form") as HTMLFormElement
+      todoInputField.focus()
+      fireEvent.input(todoInputField, { target: { value: mockText } })
+      fireEvent.submit(form)
 
-    todoInputField.focus()
-    fireEvent.input(todoInputField, { target: { value: mockText } })
-    fireEvent.submit(form)
+      todoInputField.focus()
+      fireEvent.input(todoInputField, { target: { value: mockText } })
+      fireEvent.submit(form)
+    })
 
-    fireEvent.click(getByText(mockText))
-    const itemCheckbox = container.querySelector('input[type="checkbox"]')
+    it("Hovering over an item shows a delete button", () => {
+      fireEvent.mouseEnter(todoListItems.childNodes[0])
 
-    expect(itemCheckbox).toBeChecked()
-  })
+      expect(todoListItems.childNodes[0]).toHaveTextContent("🗑")
+    })
 
-  it("Add a todo and mark it as complete by tapping on the checkbox", () => {
-    const mockText = "[dummy text]"
-    const { container, getByTestId } = render(<TodoList />)
+    it("Hovering over an item and clicking the delete button removes the item from the list", () => {
+      fireEvent.mouseEnter(todoListItems.childNodes[1])
+      fireEvent.click(getByText("🗑"))
 
-    const todoInputField = getByTestId("todoInput")
-    const form = container.querySelector("form") as HTMLFormElement
-
-    todoInputField.focus()
-    fireEvent.input(todoInputField, { target: { value: mockText } })
-    fireEvent.submit(form)
-
-    const itemCheckbox = container.querySelector(
-      'input[type="checkbox"]'
-    ) as HTMLInputElement
-    fireEvent.click(itemCheckbox)
-
-    expect(itemCheckbox).toBeChecked()
+      expect(todoListItems.childNodes.length).toBe(1)
+    })
   })
 })
