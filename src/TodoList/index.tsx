@@ -60,11 +60,12 @@ export const TodoList: React.FC<TodoListItemsType> = () => {
       <TodoListHeader />
       <ul data-testid="todoListItems">{todoList.map(renderTodoListItem)}</ul>
       <form onSubmit={(event: FormEvent) => AddTodo(event)}>
-        <button type="submit">+ Add a to-do</button>
+        <button type="submit">+</button>
         <input
           data-testid="todoInput"
           type="text"
           value={inputText}
+          placeholder="Add a to-do"
           onChange={event => setInputText(event.target.value)}
         />
       </form>

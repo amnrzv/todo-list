@@ -25,7 +25,7 @@ describe("Todo List", () => {
     it("Adds an item to the todo list by inputting in the field and pressing the button", () => {
       todoInputField.focus()
       fireEvent.input(todoInputField, { target: { value: mockText } })
-      fireEvent.submit(getByText("+ Add a to-do"))
+      fireEvent.submit(getByText("+"))
 
       expect(todoListItems.childNodes[0]).toHaveTextContent(mockText)
     })
@@ -68,8 +68,10 @@ describe("Todo List", () => {
     })
 
     it("Mark a todo as complete by tapping on the text", () => {
-      fireEvent.click(todoListItems.childNodes[0].childNodes[1])
-      const itemCheckbox = todoListItems.childNodes[0].firstChild
+      fireEvent.click(todoListItems.querySelectorAll("label")[0])
+      const itemCheckbox = todoListItems.querySelectorAll(
+        'input[type="checkbox"]'
+      )[0]
 
       expect(itemCheckbox).toBeChecked()
     })

@@ -1,5 +1,6 @@
 import React, { useState } from "react"
-import "./style.css"
+import cx from "classnames"
+import "./style.scss"
 
 type TodoListItemProps = {
   id: string
@@ -24,15 +25,17 @@ export const TodoListItem: React.FC<TodoListItemProps> = ({
       onMouseOver={() => setShowDeleteBtn(true)}
       onMouseLeave={() => setShowDeleteBtn(false)}
     >
-      <input
-        type="checkbox"
-        id={id}
-        checked={completed}
-        onChange={toggleComplete}
-      />
-      <label htmlFor={id} className={completed ? "completed" : undefined}>
-        {text}
-      </label>
+      <div className="content">
+        <input
+          type="checkbox"
+          id={id}
+          checked={completed}
+          onChange={toggleComplete}
+        />
+        <label htmlFor={id} className={cx("textLabel", { completed })}>
+          {text}
+        </label>
+      </div>
       {showDeleteBtn && <button onClick={deleteTodo}>🗑</button>}
     </li>
   )
