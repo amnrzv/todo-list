@@ -56,6 +56,16 @@ describe("Todo List", () => {
 
       expect(todoListItems.childNodes.length).toBe(2)
     })
+
+    it("Cant add an empty item", () => {
+      const form = container.querySelector("form") as HTMLFormElement
+
+      todoInputField.focus()
+      fireEvent.input(todoInputField, { target: { value: "" } })
+      fireEvent.submit(form)
+
+      expect(todoListItems.childNodes.length).toBe(0)
+    })
   })
 
   describe("Mark items", () => {

@@ -45,6 +45,10 @@ export const TodoList: React.FC = () => {
 
   const AddTodo = (event: FormEvent) => {
     event.preventDefault()
+    if (inputText === "") {
+      return
+    }
+
     setTodoList([
       ...todoList,
       {
@@ -66,6 +70,7 @@ export const TodoList: React.FC = () => {
             <AddIcon />
           </IconButton>
           <Input
+            autoFocus
             className="formInput"
             data-testid="todoInput"
             placeholder="Add a to-do"
